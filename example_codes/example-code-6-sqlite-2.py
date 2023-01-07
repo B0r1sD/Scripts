@@ -3,6 +3,7 @@
 # SQLite3 (example-code-6-sqlite-2.py)
 ################################################################################
 # Reconnect again and query
+import sqlite3
 print("\nReconnect again with taxonomy.db and run queries:")
 conn2 = sqlite3.connect('taxonomy.db')
 c2 = conn2.cursor()
