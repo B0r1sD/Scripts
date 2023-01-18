@@ -9,6 +9,7 @@ url = "http://www.cazy.org/GH100_all.html"
 response = urllib.request.urlopen(url)
 content = response.read()
 soup = BeautifulSoup(content, 'html.parser')
+#print(soup.prettify())
 
 # Tag object 1: example <table>
 tag_table = soup.table
@@ -38,5 +39,6 @@ print("\nFirst 'option tag':\n{}".format(soup.body.option))
 # Get list of all occurences of the tag
 option_list = soup.find_all("option")
 print("\nThree from list of all 'option' tags:\n{}\n{}\n{}"
-    .format(option_list[0],option_list[1],option_list[2]))
+    .format(option_list[0],option_list[1],option_list))
+
 ################################################################################

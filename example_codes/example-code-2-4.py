@@ -27,7 +27,7 @@ print("Items 1 to 3: {}".format(a[1:4]))
 # Although lists have no fixed size
 # not possible to assign off the end of a list
 #a[99]
-#a[99] = 99
+a[99] = 99
 ################################################################################
 # Type specific operations
 # Append method expands list and inserts item at end

@@ -7,9 +7,9 @@ import urllib.parse
 # POSTing data to a server
 print("\nPOSTing data to a server:")
 print("=========================\n")
-url = 'https://tryphp.w3schools.com/demo/demo_form_validation_complete.php'
+url = 'https://www.howest.be/en/brochure'
 params = {
-    'name': 'Test 2022-2023', 
+    'naam': 'Test 2022-2023', 
     'email': 'test@gmail.com', 
     'website': 'www.howest.be', 
     'comment': 'nothing', 
@@ -21,7 +21,7 @@ try:
     # response_data = response.read()
     response_data = response.read().decode('utf-8')
     print(response_data)
-    save_file = open('w3schools-post-data.txt','w')
+    save_file = open('w3schools-post-data.html','w')
     save_file.write(str(response_data))
     save_file.close()
 except Exception as e:

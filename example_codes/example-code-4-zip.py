@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+
+from itertools import zip_longest
 ################################################################################
 # ZIP FUNCTION (example-code-4-zip.py)
 ################################################################################
@@ -16,6 +18,6 @@ for i in zip([1,2,3],['a','b','c'],['#','*','$']):
 numbersList = [1, 2, 3]
 strList = ['one', 'two']
 numbersTuple = ('ONE', 'TWO', 'THREE', 'FOUR')
-for i in zip(numbersList, strList, numbersTuple):
+for i in zip_longest(numbersList, strList, numbersTuple,fillvalue=0):
     print(i)
 ################################################################################

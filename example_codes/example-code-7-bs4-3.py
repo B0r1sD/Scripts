@@ -24,6 +24,8 @@ print("\nCHILDREN OF TABLE:"
       "\n==================")
 for child in table_tag.children:
     print("\nNEW CHILD:\n{}".format(child))
+
+    '''
 # Iterate recursively
 print("\nDESCENDENTS OF TABLE:" 
       "\n=====================")
@@ -46,7 +48,7 @@ for td in td_separateur2:
     print("--> Name = {} | string = {}".format(td.name,td.string))
     c = c+1
 ################################################################################
-'''
+
 # Sleep for 3 sec
 import time
 print("\nSleeping...\n")

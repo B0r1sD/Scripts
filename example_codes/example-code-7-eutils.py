@@ -14,7 +14,9 @@ gene_esearch = eclient.esearch(db='gene',term='tumor necrosis factor')
 print("\n\nResults of gene esearch:\n{}".format(gene_esearch))
 obj_summary_list = dir(gene_esearch)
 print(obj_summary_list)
+print("Count: {}".format(gene_esearch.count))
 
+'''
 # Gene esearch summary result
 print("\nGene esearch summary result:")
 print("="*28)
@@ -58,4 +60,4 @@ for retstart in range(retmax):
     this_gene = gene_efetch.entrezgenes[0]
     print("HGNC: {}".format(this_gene.hgnc))
     print("Species: {}".format(this_gene.genus_species))
-################################################################################"""
+################################################################################"""'''

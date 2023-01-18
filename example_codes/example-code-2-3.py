@@ -51,7 +51,7 @@ print(str2.zfill(10))     # '0000ABC123'
 print(str2.rjust(10))     # '    ABC123'
 str3 = "ABC1223123"
 # split() method 2 parameters: separator and maxsplit
-print(str3.rsplit("2",2)) # ['ABC12', '31', '3']
+print(str3.rsplit("2",5)) # ['ABC12', '31', '3']
 ################################################################################
 # Formatting strings
 print("First char of str1: " + str1[0])

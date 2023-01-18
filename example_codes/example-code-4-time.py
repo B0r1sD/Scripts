@@ -10,7 +10,7 @@ print(ticks)
 # Use time to get and use struct_time
 timetuple = time.localtime(time.time())
 print("\nLocal current time:\n{}".format(timetuple))
-print("Year: {}".format(timetuple.tm_year))
+print("Year: {}".format(timetuple[0]))
 print("Hour: {}".format(timetuple.tm_hour))
 # Hour & min
 hourmin = str(timetuple.tm_hour) + "h" + str(timetuple.tm_min)
