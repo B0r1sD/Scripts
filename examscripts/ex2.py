@@ -75,7 +75,7 @@ for accession in accessions:
     # get all results of the SNP query
     result = cursor.fetchall()
     
-    print(result)
+    #print(result)
     
     rowNr = 0
     
@@ -109,7 +109,7 @@ for accession in accessions:
             rowNr += 1
         else:
             # Add data rows
-            print(row)
+            #print(row)
             
             row_cells = table.add_row().cells
                     
