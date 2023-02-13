@@ -1,169 +1,126 @@
 #!/usr/bin/python3
-#Boris Depoortere, 19/01/2023, Scripting exam pt. 1
-
+#Boris Depoortere, 19/01/2023, Scripting exam pt. 2
 #importing modules
+import regex as re
+import csv
+#from openpyxl import load_workbook
+from openpyxl import Workbook
 
-import MySQLdb as my
-from docx import Document
-from docx.shared import Cm
-import matplotlib.pyplot as plt
+#for sorted dict
+from collections import OrderedDict
 import numpy as np
 
+# initialize excel workbook
+wb = Workbook()
+ws = wb.active
+# header for excel file
+ws.append(["Species","LPSN link","NCBI Genome link","LPSN status","LPSN reference"])
 
-###############################################################
-# A Input
-###############################################################
-print("This script will look for transcript data using Ensembl ENGS accession numbers")
-print("="*62)
-accessions = []
+counter = 0
+dict = {}
+Name = []
+SpeciesID = []
 
-# if user enters 0 --> the input ask will stop and the script will continue
-while True:
-    acc = input("Enter accession no. or type 0 to stop: ")
-    if acc != "0":
-        accessions.append(acc)
-        continue
-    else:
+textfile = open('NCBI_Genome_result_Legionella.txt', 'r')
+for line in textfile:
+    #print(line)
+    
+    #species names
+    if re.match("\d\d\. ",line):
+        counter += 1
+        print("{}: {}".format(counter,line[4:]),end="")
+        name = line[4:]
+        name1 = name.rstrip()
+        Name.append(name1)
+    
+    #species ID
+    if re.match("Genome ID:",line):
+        #print(line[11:],end="")
+        spec = line[11:]
+        spec1 = spec.rstrip()
+        SpeciesID.append(spec1)
+    
+
+print("\nData from NCBI Genome file stored in dictionary:\n")
+
+for key in Name:
+    for value in SpeciesID:
+        dict[key] = value
+        SpeciesID.remove(value)
         break
-print("\nYour list:\n")
-print(accessions)
+
+#print(dict)
+
+#sorting dictionary on genus
+'''
+keys = list(dict.keys())
+values = list(dict.values())
+sorted_value_index = np.argsort(values)
+sorted_dict = {keys[i]: values[i] for i in sorted_value_index}
+ 
+print(sorted_dict)
 
 
-###############################################################
-# B data handling 
-###############################################################
+dict_sort = {k: v for k, v in sorted(dict.items(), key=lambda item: item[1])}
+print(dict_sort)
+'''
 
-# Opening a blank document based on default template
-document = Document()
+######## reading second .csv file ########
 
-# connect to UCSC
-try:
-    conn = my.connect(host="genome-euro-mysql.soe.ucsc.edu",
-        user="genomep",
-        passwd="password",
-        db="hg19")
-    cursor = conn.cursor()
-except my.OperationalError:
-    print("\nConnection to UCSC database failed. Check your internet connection and try again.\n")
+found_c = 0
+c = 0
 
-# example accessions: ENSG00000223972, ENSG00000137757, ENSG00000169862 and ENSG00000144283
-print("Processing Ensembl gene list:")
-print("="*62)
+with open('lpsn_export.csv', 'r') as file:
+    csv_reader = csv.reader(file, delimiter=',')
+    #print("Reading LPSN file and searching for {}:".format())
+    for rowlist in csv_reader:
+        #print(line)
+        
+        #! printing first 1000 lines as test, set to >28213 for whole list or delete if else loop statement.
+        
+        if c <= 1000:
+        #print("{} {}".format(rowlist[0],rowlist[1]))
+            for specie_genus in Name:
+                
+                specie = specie_genus.split(" ")
 
-#plot data list opener
-TranscriptList = []
-totalTranscripts = []
-
-for accession in accessions:
-    query = "SELECT * FROM wgEncodeGencodeAttrsV36lift37 WHERE geneId LIKE "
-    q = """{}'{}%'""".format(query,accession)
-
-    #visual output
-    print("Getting data for {} using query:".format(accession))
-    print("\t{}".format(q))
-    transcript = cursor.execute(q)
-    print("Found {} transcripts\n".format(transcript))
-    
-    #generate plot data list
-    totalTranscripts.append(transcript)
-    
-    
-    
-    # commit
-    conn.commit()
-    
-    # get all results of the SNP query
-    result = cursor.fetchall()
-    
-    #print(result)
-    
-    rowNr = 0
-    
-    #iterating over result
-    for row in result:
-        if rowNr == 0:
-            ############# creating docx header ############
-            
-            
-            #assigning names to asked information for readability (FAIR)
-            gsymbol = row[1]
-            transcriptID = row[4]
-            ttype = row[6]
-            level = row[11]
-            
-            ####### building Word file .doxc #########
-            
-            document.add_heading('{}'.format(accession),1)
-
-            table = document.add_table(rows=1, cols=4)
-            table.style = 'LightShading-Accent1'
-            
-            # Header row
-            hdr_cells = table.rows[0].cells
-            hdr_cells[0].text = 'GENE SYMBOL'
-            hdr_cells[1].text = 'TRANSCRIPT ID'
-            hdr_cells[2].text = 'TRANSCRIPT TYPE'
-            hdr_cells[3].text = 'LEVEL'
-            
-            #ending header creation
-            rowNr += 1
-        else:
-            # Add data rows
-            #print(row)
-            
-            row_cells = table.add_row().cells
+                specie_csv = rowlist[0] + ' ' + rowlist[1]
+                
+                #print(specie_csv)
+                #print(specie_genus)
+                
+                if specie[0] == "Legionella":
                     
-            row_cells[0].text = gsymbol
-            row_cells[1].text = transcriptID
-            row_cells[2].text = ttype
-            row_cells[3].text = str(level)
-            
-        
-        #creating transcript type list
-        
-        TranscriptList.append(ttype)
-    RowNr = 0
-    document.add_page_break()
+                    found_c +=1
+                    
+                    #data for in excel workbook
+                    
+                    if rowlist[10] != None:
+                        Genome = "https://www.ncbi.nlm.nih.gov/genome/?term={}".format(dict[specie_genus])
+                    else:
+                        Genome = "-"
+                    
+                    LPSNref = rowlist[3]
+                    status = rowlist[4]
+                    LPSNlink = rowlist[6]
+                    
+                    #if dict[specie_genus] == None:
+                        #print('##########################')
+                    
+                    ws.append([specie_genus, LPSNlink,Genome,status,LPSNref])
+                        
+                        #print(status,LPSNlink,LPSNref)
+                    
+                    #if specie_genus == specie_csv:
+                        
+                    print("Found ({}) {}".format(found_c,specie_genus))
+                    print("\t--> {}".format(rowlist[6]))
+                    print("\t--> Genome: {}".format(Genome))
+                    c += 1
+        else:
+            break
 
-#################barplot creation##################
-
-#unique values --> creating set
-
-#print(TranscriptList)
-YAxis = set(TranscriptList)
-#print(YAxis)
-
-UniqueTranscripts = list(YAxis)
-UniqueTranscripts.sort()
-
-print(UniqueTranscripts)
-#hardcoded bcs sometimes not same amount of x and y ... above works for 1, 2 examples but for 4 there is an inbalance
-#UniqueTranscripts = ['nonsense_mediated_decay', 'processed_transcript', 'protein_coding','filler','filler'']
-
-print(totalTranscripts)
-
-plt.figure(figsize=(10,6))
-plt.xlabel("Total number of transcripts",fontsize=12)
-plt.title("Transcripts per type")
-plt.barh(UniqueTranscripts, totalTranscripts,align='center')
-
-
-#tick labels
-from matplotlib.ticker import StrMethodFormatter
-plt.gca().xaxis.set_major_formatter(StrMethodFormatter('{x:,.0f}'))
-plt.savefig('./answer1.png', bbox_inches='tight')
-plt.show()
-
-
-#adding picture at end of page
-
-document.add_picture('answer1.png', width=Cm(12))
-
-        
-#saving files and closing connection
-conn.close()
-document.save('answer1.docx')
-
-#print(totalTranscripts)
-
-# example accessions: ENSG00000223972, ENSG00000137757, ENSG00000169862 and ENSG00000144283
+       
+print("Done")
+# save the excel file
+wb.save("Legionalla.xlsx")
