@@ -3,7 +3,7 @@
 
 int main(void)
 {
-    // Dynamically allocate 
+    // Dynamically allocate an array of size 3
     int *list = malloc(3 * sizeof(int));
     list[0] = 1;
     list[1] = 2;
@@ -40,9 +40,3 @@ int main(void)
 
 //typedef, struct
 
-typdef struct node
-{
-    int number;
-    struct node *next;
-}
-node;

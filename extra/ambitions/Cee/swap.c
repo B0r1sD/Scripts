@@ -7,11 +7,12 @@ void swap(int *a, int *b);
 
 int main(void)
 {
-    //this creates swap memory
+    //this creates stack memory
     int x = 1;
     int y = 2;
     printf("x is %i and y is %i\n", x, y);
     swap(&x, &y);
+    //swaps x and y using the 0x123 adress 
     printf("x is %i and y is %i\n", x, y);
 }
 
@@ -21,5 +22,5 @@ void swap(int *a, int *b)
     //go to the adress behind pointer a
     *a = *b;
     *b = tmp;
-    //these variables turn into garbage values after its use case has finished
+    //these variables turn into garbage values after its use case has finished 
 }
