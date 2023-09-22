@@ -1,0 +1,17 @@
+{%extends "layout.html"%}
+{% block body%}
+
+<!-- Above: Jinja syntax -->
+
+<p>hello world</p>
+hello, {{namePerson}}
+
+        <!-- in URL, put ?name=name ; example 127.0.0.1:5000/?name=Boris-->
+
+<form action="/greet" method="post">
+
+    <input type="text" required placeholder="Name" autocomplete="off" autofocus name="name" id="">
+    <input type="submit">
+</form>
+
+{%endblock%}

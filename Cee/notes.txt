@@ -1,0 +1,25 @@
+
+L5
+array = list of contiguous data
+
+queue = FIFO
+stack = LIFO
+
+big O()
+big Omega()
+
+C: source code -> compiler -> output
+python: source code -> interpreter -> output
+
+l8
+IP handles the addressing of the packets and standardizes numbers that every computer gets (own included)
+TCP handles standard of what services can be used between point A and B
+
+DNS: hash table with domain name and IP address (translates fully qualified domain names to IP addresses)
+
+HTTP: hypertext Transfer Protocol: final protocol that standardises webbrowsers and webservers intercommunicate (internet: moves packets (data from A to B) 
+HTTP one application on top of the web
+
+https://www.google.com/route?key=value
+
+flask = microframework for web application development
